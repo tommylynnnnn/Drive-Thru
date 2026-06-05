@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drive Thru Simulator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="game-container">
+
+        <!-- TOP BAR -->
+        <div class="top-bar">
+            <h1>🍔 Drive Thru Simulator</h1>
+
+            <div class="stats">
+                <div class="stat-box">
+                    <span>Score</span>
+                    <h2 id="score">0</h2>
+                </div>
+
+                <div class="stat-box">
+                    <span>Customer</span>
+                    <h2 id="customerNumber">1 / 5</h2>
+                </div>
+
+                <div class="stat-box timer-box">
+                    <span>Time</span>
+                    <h2 id="timer">20</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN AREA -->
+        <div class="main-area">
+
+            <!-- CUSTOMER SIDE -->
+            <div class="customer-panel">
+
+                <h2>Drive-Thru Window</h2>
+
+                <div class="window">
+
+                    <div id="customerAvatar" class="avatar">
+                        <div class="face">
+                            <div class="eyes">
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <div class="mouth"></div>
+                        </div>
+                    </div>
+
+                    <div class="speech-bubble">
+                        <p id="customerSpeech">
+                            Welcome!
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ORDER SIDE -->
+            <div class="order-panel">
+
+                <h2>Build Order</h2>
+
+                <!-- MAINS -->
+                <div class="menu-section">
+
+                    <h3>Mains</h3>
+
+                    <select id="burgerSelect">
+                        <option value="">Choose Burger</option>
+                        <option value="Hamburger">Hamburger</option>
+                        <option value="Cheeseburger">Cheeseburger</option>
+                        <option value="Double Burger">Double Burger</option>
+                        <option value="Bacon Burger">Bacon Burger</option>
+                        <option value="Chicken Burger">Chicken Burger</option>
+                    </select>
+
+                </div>
+
+                <!-- SIDES -->
+                <div class="menu-section">
+
+                    <h3>Sides</h3>
+
+                    <select id="friesType">
+                        <option value="">Choose Fries</option>
+                        <option value="Regular">Regular Fries</option>
+                        <option value="Curly">Curly Fries</option>
+                        <option value="Crinkle">Crinkle Fries</option>
+                        <option value="Waffle">Waffle Fries</option>
+                    </select>
+
+                    <select id="friesSize">
+                        <option value="">Choose Size</option>
+                        <option value="Small">Small</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Large">Large</option>
+                    </select>
+
+                </div>
+
+                <!-- DRINKS -->
+                <div class="menu-section">
+
+                    <h3>Drinks</h3>
+
+                    <select id="drinkType">
+                        <option value="">Choose Drink</option>
+                        <option value="Cola">Cola</option>
+                        <option value="Lemonade">Lemonade</option>
+                        <option value="Orange Soda">Orange Soda</option>
+                        <option value="Root Beer">Root Beer</option>
+                        <option value="Water">Water</option>
+                    </select>
+
+                    <select id="drinkSize">
+                        <option value="">Choose Size</option>
+                        <option value="Small">Small</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Large">Large</option>
+                    </select>
+
+                </div>
+
+                <!-- BUTTON -->
+                <button id="submitOrder" class="submit-btn">
+                    Send To Kitchen 🍟
+                </button>
+
+                <div id="resultMessage" class="result-message"></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- END OF DAY POPUP -->
+    <div id="dayPopup" class="popup hidden">
+
+        <div class="popup-content">
+
+            <h2>Day Complete!</h2>
+
+            <p>
+                Final Score:
+                <strong id="finalScore">0</strong>
+            </p>
+
+            <button id="nextDayBtn">
+                Start New Day
+            </button>
+
+        </div>
+
+    </div>
+
+    <script src="game.js"></script>
+
+</body>
+</html>
