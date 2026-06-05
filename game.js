@@ -1,20 +1,22 @@
 // =======================
-// DRIVE THRU SIMULATOR
-// VERSION 1 CORE LOGIC
+// DRIVE THRU SIM V2
+// UPGRADES SYSTEM ADDED
 // =======================
 
-// GAME STATE
+let money = 0;
 let score = 0;
 let customerCount = 1;
 let day = 1;
-let timeLeft = 20;
+
+let timeLimit = 20;
+let timeLeft = timeLimit;
+
+let incomeMultiplier = 1;
 
 let currentOrder = {};
 let timerInterval = null;
 
-// =======================
-// DOM ELEMENTS
-// =======================
+// DOM
 const scoreEl = document.getElementById("score");
 const timerEl = document.getElementById("timer");
 const customerNumberEl = document.getElementById("customerNumber");
@@ -34,9 +36,10 @@ const popup = document.getElementById("dayPopup");
 const finalScore = document.getElementById("finalScore");
 const nextDayBtn = document.getElementById("nextDayBtn");
 
-// =======================
-// ORDER GENERATION
-// =======================
+const upgradeTimeBtn = document.getElementById("upgradeTime");
+const upgradePayBtn = document.getElementById("upgradePay");
+
+// ORDER
 function generateOrder() {
     const burgers = ["Hamburger", "Cheeseburger", "Double Burger", "Bacon Burger", "Chicken Burger"];
     const fries = ["Regular", "Curly", "Crinkle", "Waffle"];
@@ -57,12 +60,11 @@ function generateOrder() {
         `and a ${currentOrder.drinkSize} ${currentOrder.drinkType}.`;
 }
 
-// =======================
 // TIMER
-// =======================
 function startTimer() {
     clearInterval(timerInterval);
-    timeLeft = 20;
+    timeLeft = timeLimit;
+
     timerEl.textContent = timeLeft;
 
     timerInterval = setInterval(() => {
@@ -71,17 +73,14 @@ function startTimer() {
 
         if (timeLeft <= 0) {
             clearInterval(timerInterval);
-            submitOrder(true); // auto fail
+            submitOrder(true);
         }
     }, 1000);
 }
 
-// =======================
-// CHECK ORDER
-// =======================
+// CHECK
 function checkOrder() {
     let correct = 0;
-    let total = 5;
 
     if (burgerSelect.value === currentOrder.burger) correct++;
     if (friesType.value === currentOrder.friesType) correct++;
@@ -89,41 +88,34 @@ function checkOrder() {
     if (drinkType.value === currentOrder.drinkType) correct++;
     if (drinkSize.value === currentOrder.drinkSize) correct++;
 
-    return { correct, total };
+    return correct;
 }
 
-// =======================
-// SUBMIT ORDER
-// =======================
+// SUBMIT
 function submitOrder(autoFail = false) {
     clearInterval(timerInterval);
 
-    const result = checkOrder();
+    let correct = checkOrder();
 
-    let earned = 0;
+    let earned = Math.floor((correct / 5) * 100 * incomeMultiplier);
 
-    if (!autoFail) {
-        earned = Math.floor((result.correct / result.total) * 100);
-    }
-
-    score += earned;
-
-    if (result.correct === 5 && !autoFail) {
-        resultMessage.textContent = "Perfect Order! +100";
-    } else if (autoFail) {
+    if (autoFail) {
+        earned = 0;
         resultMessage.textContent = "Too slow! Customer left!";
+    } else if (correct === 5) {
+        resultMessage.textContent = "Perfect Order! +Bonus!";
     } else {
-        resultMessage.textContent = `Order ${result.correct}/5 correct. +${earned}`;
+        resultMessage.textContent = `${correct}/5 correct`;
     }
+
+    money += earned;
 
     updateUI();
 
-    setTimeout(nextCustomer, 1200);
+    setTimeout(nextCustomer, 1000);
 }
 
-// =======================
 // NEXT CUSTOMER
-// =======================
 function nextCustomer() {
     customerCount++;
 
@@ -138,9 +130,7 @@ function nextCustomer() {
     updateUI();
 }
 
-// =======================
-// RESET INPUTS
-// =======================
+// RESET
 function resetInputs() {
     burgerSelect.value = "";
     friesType.value = "";
@@ -149,26 +139,20 @@ function resetInputs() {
     drinkSize.value = "";
 }
 
-// =======================
 // END DAY
-// =======================
 function endDay() {
     clearInterval(timerInterval);
 
-    finalScore.textContent = score;
+    finalScore.textContent = money;
     popup.classList.remove("hidden");
 }
 
-// =======================
 // NEW DAY
-// =======================
 nextDayBtn.addEventListener("click", () => {
     popup.classList.add("hidden");
 
     customerCount = 1;
     day++;
-
-    score = 0;
 
     updateUI();
     resetInputs();
@@ -176,24 +160,35 @@ nextDayBtn.addEventListener("click", () => {
     startTimer();
 });
 
-// =======================
-// UI UPDATE
-// =======================
+// UPGRADES
+upgradeTimeBtn.addEventListener("click", () => {
+    if (money >= 100) {
+        money -= 100;
+        timeLimit += 2;
+        alert("Upgrade purchased: +2 seconds!");
+        updateUI();
+    }
+});
+
+upgradePayBtn.addEventListener("click", () => {
+    if (money >= 150) {
+        money -= 150;
+        incomeMultiplier += 0.2;
+        alert("Upgrade purchased: +20% earnings!");
+        updateUI();
+    }
+});
+
+// UI
 function updateUI() {
-    scoreEl.textContent = score;
+    scoreEl.textContent = money;
     customerNumberEl.textContent = `${customerCount} / 5`;
 }
 
-// =======================
 // EVENTS
-// =======================
-submitBtn.addEventListener("click", () => {
-    submitOrder(false);
-});
+submitBtn.addEventListener("click", () => submitOrder(false));
 
-// =======================
 // START GAME
-// =======================
 generateOrder();
 startTimer();
 updateUI();
