@@ -242,3 +242,25 @@ select {
 .hidden {
     display: none;
 }
+
+.shop {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.shop button {
+    padding: 10px;
+    border-radius: 12px;
+    border: none;
+    background: #6c5ce7;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.shop button:hover {
+    transform: scale(1.03);
+    background: #5a4bd6;
+}
